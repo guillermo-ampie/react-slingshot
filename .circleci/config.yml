@@ -8,19 +8,19 @@ orbs:
 # DEFAULTS_BEGIN
 #
 # Project's environment variables: 
-# 
+# - DEFAULT_DIR: default to "npm", relative to project's working directory directory
 my_working_directory: &my_working_directory
-  working_directory: ~/project/npm
+  working_directory: ${CIRCLE_WORKING_DIRECTORY}/${DEFAULT_DIR}
 
 my_docker_image: &my_docker_image
   docker:
     - image: circleci/node:13.8.0
 
 my_root_directory: &my_root_directory
-  root: ~/project/npm
+  root: ${CIRCLE_WORKING_DIRECTORY}/${DEFAULT_DIR}
 
 my_attach_directory: &my_attach_directory
-  at: ~/project/npm
+  at: ${CIRCLE_WORKING_DIRECTORY}/${DEFAULT_DIR}
 
 
 
