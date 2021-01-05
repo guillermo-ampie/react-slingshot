@@ -20,7 +20,7 @@ my_root_directory: &my_root_directory
   root: ~/project
 
 my_attach_directory: &my_attach_directory
-  at: ~/project/npm
+  at: ~/project/npm/*
 # DEFAULTS_END    
 
 jobs:
