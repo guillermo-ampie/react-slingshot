@@ -5,6 +5,10 @@ orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
 
+##
+## TODO: Save npm installation into a workspace
+##
+
 # DEFAULTS_BEGIN
 #
 # Project's environment variables: 
@@ -15,12 +19,6 @@ my_docker_image: &my_docker_image
 
 my_working_directory: &my_working_directory
   working_directory: ~/project/npm
-
-my_root_directory: &my_root_directory
-  root: ~/project
-
-my_attach_directory: &my_attach_directory
-  at: ~/project/npm/*
 # DEFAULTS_END    
 
 jobs:
@@ -30,10 +28,6 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - persist_to_workspace:
-          <<: *my_root_directory 
-          paths:
-            - "*"
       - run: npm run lint
 
   test: 
@@ -42,9 +36,7 @@ jobs:
     <<: *my_working_directory
     steps:
       - checkout
-      # - run: npm install
-      - attach_workspace:
-          <<: *my_attach_directory
+      - run: npm install
       - run: npm run test
 
   analyze:
@@ -53,9 +45,7 @@ jobs:
     <<: *my_working_directory
     steps:
       - checkout
-      # - run: npm install
-      - attach_workspace:
-          <<: *my_attach_directory
+      - run: npm install
       - run: npm audit
 
 
