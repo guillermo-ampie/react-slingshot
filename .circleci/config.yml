@@ -4,10 +4,52 @@ version: 2.1
 orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
+
+# DEFAULTS_BEGIN
+my_docker_image: &my_docker_image
+  docker:
+    - image: circleci/node:13.8.0
+
+my_working_directory: &my_working_directory
+  working_directory: /var/npm   # Project's env-var    
+# DEFAULTS_END    
+
+jobs:
+  <<: *my_working_directory
+  build:
+    <<: *my_docker_image
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run lint
+
+  test: 
+    build:
+    <<: *my_docker_image
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+
+  analyze:
+    build:
+    <<: *my_docker_image
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm audit
+
+
 # Orchestrate or schedule a set of jobs
 workflows:
-  # Name the workflow "welcome"
+  # Name the workflow "prepare_app"
   welcome:
     # Run the welcome/run job in its own container
     jobs:
-      - welcome/run
+      - build
+      - test:
+          requires:
+          - build
+      - analyze:
+          requires:
+          - test
