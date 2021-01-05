@@ -6,18 +6,30 @@ orbs:
   welcome: circleci/welcome-orb@0.4.1
 
 # DEFAULTS_BEGIN
+#
+# Project's environment variables: 
+# - DEFAULT_DIR
+my_working_directory: &my_working_directory
+  working_directory: ${DEFAULT_DIR}
+
 my_docker_image: &my_docker_image
   docker:
     - image: circleci/node:13.8.0
 
-my_working_directory: &my_working_directory
-  working_directory: /var/npm   # Project's env-var    
+my_root_directory: &my_root_directory
+  root: ${DEFAULT_DIR}
+
+my_attach_directory: &my_attach_directory
+  at: ${DEFAULT_DIR}
+
+
+
 # DEFAULTS_END    
 
 jobs:
-  <<: *my_working_directory
   build:
     <<: *my_docker_image
+    <<: *my_working_directory
     steps:
       - checkout
       - run: npm install
@@ -26,6 +38,8 @@ jobs:
   test: 
     build:
     <<: *my_docker_image
+    <<: *my_working_directory
+
     steps:
       - checkout
       - run: npm install
@@ -34,6 +48,8 @@ jobs:
   analyze:
     build:
     <<: *my_docker_image
+    <<: *my_working_directory
+
     steps:
       - checkout
       - run: npm install
@@ -43,7 +59,7 @@ jobs:
 # Orchestrate or schedule a set of jobs
 workflows:
   # Name the workflow "prepare_app"
-  welcome:
+  prepare_app:
     # Run the welcome/run job in its own container
     jobs:
       - build
