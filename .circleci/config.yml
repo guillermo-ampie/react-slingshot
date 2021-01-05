@@ -44,7 +44,7 @@ jobs:
       - checkout
       # - run: npm install
       - my_attach_workspace:
-          <<: &my_attach_directory
+          <<: *my_attach_directory
       - run: npm run test
 
   analyze:
@@ -55,7 +55,7 @@ jobs:
       - checkout
       # - run: npm install
       - my_attach_workspace:
-          <<: &my_attach_directory
+          <<: *my_attach_directory
       - run: npm audit
 
 
