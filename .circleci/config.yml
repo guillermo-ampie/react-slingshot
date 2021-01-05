@@ -8,19 +8,19 @@ orbs:
 # DEFAULTS_BEGIN
 #
 # Project's environment variables: 
-# - DEFAULT_DIR
+# 
 my_working_directory: &my_working_directory
-  working_directory: ${DEFAULT_DIR}
+  working_directory: ~/project/npm
 
 my_docker_image: &my_docker_image
   docker:
     - image: circleci/node:13.8.0
 
 my_root_directory: &my_root_directory
-  root: ${DEFAULT_DIR}
+  root: ~/project/npm
 
 my_attach_directory: &my_attach_directory
-  at: ${DEFAULT_DIR}
+  at: ~/project/npm
 
 
 
@@ -39,7 +39,6 @@ jobs:
     build:
     <<: *my_docker_image
     <<: *my_working_directory
-
     steps:
       - checkout
       - run: npm install
